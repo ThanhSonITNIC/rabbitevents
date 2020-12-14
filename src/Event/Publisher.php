@@ -39,12 +39,8 @@ class Publisher
      * @param string $event
      * @param array $payload
      * @return Publisher
-     *
-     * @throws Exception
-     * @throws InvalidDestinationException
-     * @throws InvalidMessageException
      */
-    public function send(string $event, array $payload, int $delay = 0): self
+    public function send(string $event, array $payload): self
     {
         $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
@@ -80,18 +76,30 @@ class Publisher
      * @param $event
      * @param array $payload
      * @return array
+     * @throws \InvalidArgumentException
      */
     private function extractEventAndPayload($event, array $payload)
     {
         if (is_object($event) && $this->eventShouldBePublished($event)) {
-            return [$event->publishEventKey(), $event->toPublish()];
+            return [$event->publishEventKey(), $this->preparePayload($event->toPublish())];
         }
 
         if (is_string($event)) {
-            return [$event, Arr::wrap($payload)];
+            return [$event, $this->preparePayload($payload)];
         }
 
         throw new \InvalidArgumentException('Event must be a string or implement `ShouldPublish` interface');
+    }
+
+    /**
+     * Prepare payload array before publishing
+     *
+     * @param array $payload
+     * @return array
+     */
+    private function preparePayload(array $payload)
+    {
+        return Arr::isAssoc($payload) ? [$payload] : Arr::wrap($payload);
     }
 
     /**
@@ -99,7 +107,6 @@ class Publisher
      *
      * @param object $event
      * @return bool
-     * @throws \ReflectionException
      */
     protected function eventShouldBePublished($event)
     {
