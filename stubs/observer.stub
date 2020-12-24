@@ -25,7 +25,10 @@ class DummyClass
      */
     public function updated(DummyModel $dummyModel)
     {
-        publish('DummyModel.updated', $dummyModel->toArray());
+        publish('DummyModel.updated', [
+            'getChanges'  => $dummyModel->getChanges(),
+            'getOriginal' => $dummyModel->getOriginal(),
+        ]);
     }
 
     /**
@@ -39,25 +42,4 @@ class DummyClass
         publish('DummyModel.deleted', $dummyModel->toArray());
     }
 
-    /**
-     * Handle the DocDummyModel "restored" event.
-     *
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return void
-     */
-    public function restored(DummyModel $dummyModel)
-    {
-        publish('DummyModel.restored', $dummyModel->toArray());
-    }
-
-    /**
-     * Handle the DocDummyModel "force deleted" event.
-     *
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return void
-     */
-    public function forceDeleted(DummyModel $dummyModel)
-    {
-        publish('DummyModel.forceDeleted', $dummyModel->toArray());
-    }
 }

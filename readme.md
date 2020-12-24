@@ -45,6 +45,29 @@ You may use Composer to install RabbitEvents into your Laravel project:
 $ composer require nuwber/rabbitevents
 ```
 
+Update composer.json
+```json
+...
+"repositories":
+[
+    ...
+    {
+        "type": "vcs",
+        "url": "https://github.com/ThanhSonITNIC/rabbitevents"
+    }
+],
+"require": {
+    ...
+    "nuwber/rabbitevents": "dev-tomoni"
+},
+...
+```
+
+Update package
+```bash
+$ composer update nuwber/rabbitevents
+```
+
 After installing RabbitEvents, publish its config and a service provider using the `rabbitevents:install` Artisan command:
 
 ```bash
@@ -76,7 +99,19 @@ return [
             ],
         ],
     ],
+    'path_exectors' => 'App\MQ',
+    'user_model' => 'App\Entities\User',
+    'guard' => 'ms',
+    'prefix_event' => env('APP_NAME'),
 ];
+```
+
+Register provider
+```php
+'providers' => [
+    ...
+    Nuwber\Events\Tomoni\RabbitEventsServiceProvider::class,
+]
 ```
 
 # Events <a name="events"></a>

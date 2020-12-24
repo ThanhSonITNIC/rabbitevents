@@ -29,4 +29,8 @@ return [
             ],
         ],
     ],
+    'path_exectors' => 'App\MQ',
+    'user_model' => 'App\Entities\User',
+    'guard' => 'ms',
+    'prefix_event' => env('APP_NAME'),
 ];

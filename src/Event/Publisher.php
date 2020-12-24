@@ -67,7 +67,8 @@ class Publisher
 
     public function publish($event, array $payload = [])
     {
-        return $this->send(...$this->extractEventAndPayload($event, $payload));
+        $data = \Nuwber\Events\Tomoni\Publisher::beforePublish($event, $payload);
+        return $this->send(...$this->extractEventAndPayload(...$data));
     }
 
     /**
