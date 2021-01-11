@@ -11,7 +11,7 @@ abstract class Listener
             $payload = $payload[0];
 
             // login if exist user
-            if (array_key_exists('user', $payload)) {
+            if (array_key_exists('user', $payload) && !empty($payload['user'])) {
                 $this->setAuth($payload['user']);
             }
 
